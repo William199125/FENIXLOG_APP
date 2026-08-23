@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { login } from '../services/auth.service';
+import { authStore } from '../services/authStore'; // ← NUEVO
 
 export const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
@@ -16,6 +17,7 @@ export const LoginScreen = ({ navigation }: any) => {
     setLoading(true);
     try {
       const resultado = await login(username, password);
+      authStore.setToken(resultado.accessToken); // ← NUEVO: guarda el token en memoria
       console.log('Login exitoso:', resultado);
       Alert.alert('Bienvenido', `Sesión iniciada como ${resultado.usuario.username} (${resultado.usuario.rol})`);
       navigation.navigate('Home');
