@@ -7,6 +7,7 @@ export interface Vehiculo {
   registro: string;
   provincia: string;
   estado: string;
+  updatedAt: string; // ← NUEVO
 }
 
 export async function obtenerVehiculos(): Promise<Vehiculo[]> {
