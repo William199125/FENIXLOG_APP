@@ -6,7 +6,6 @@ const REFRESH_KEY = 'fenixlog_refresh_token';
 let accessTokenMemoria: string | null = null;
 
 export const secureAuth = {
-  // Se llama una vez al iniciar la app, antes de mostrar cualquier pantalla
   async init() {
     accessTokenMemoria = await SecureStore.getItemAsync(ACCESS_KEY);
     return accessTokenMemoria;
@@ -19,7 +18,16 @@ export const secureAuth = {
   },
 
   getToken() {
-    return accessTokenMemoria; // lectura síncrona para el interceptor de Axios
+    return accessTokenMemoria;
+  },
+
+  async getRefreshToken() {
+    return SecureStore.getItemAsync(REFRESH_KEY);
+  },
+
+  async setAccessToken(token: string) {
+    accessTokenMemoria = token;
+    await SecureStore.setItemAsync(ACCESS_KEY, token);
   },
 
   async clear() {
