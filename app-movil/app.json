@@ -1,6 +1,42 @@
 {
-  "plugins": [
-    "expo-secure-store",
-    "expo-sqlite"
-  ]
+  "expo": {
+    "name": "FENIX LOG",
+    "slug": "fenixlog",
+    "version": "1.0.0",
+    "orientation": "default",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-secure-store",
+      "expo-sqlite",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "FENIX LOG necesita acceder a la cámara para registrar evidencia fotográfica del estado de los vehículos durante las órdenes de mantenimiento."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "FENIX LOG registra la ubicación donde se levanta una orden de mantenimiento, para verificar la posición real del vehículo inspeccionado."
+        }
+      ]
+    ],
+    "android": {
+      "package": "ec.mil.fenixlog",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "ec.mil.fenixlog",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "FENIX LOG necesita acceder a la cámara para registrar evidencia fotográfica del estado de los vehículos durante las órdenes de mantenimiento.",
+        "NSLocationWhenInUseUsageDescription": "FENIX LOG registra la ubicación donde se levanta una orden de mantenimiento, para verificar la posición real del vehículo inspeccionado."
+      }
+    }
+  }
 }

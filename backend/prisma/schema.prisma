@@ -38,6 +38,9 @@ model Orden {
   vehiculoId  Int?
   vehiculo    Vehiculo?      @relation(fields: [vehiculoId], references: [id])
   detalles    DetalleOrden[]
+  fotoBase64  String?        @db.LongText
+  latitud     Float?
+  longitud    Float?
 }
 
 model DetalleOrden {
@@ -46,4 +49,4 @@ model DetalleOrden {
   producto String
   cantidad Int
   orden    Orden  @relation(fields: [ordenId], references: [id])
-} 
+}

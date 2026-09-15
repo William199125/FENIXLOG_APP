@@ -6,6 +6,7 @@ import { LoginScreen } from '../screens/LoginScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { VehiculosScreen } from '../screens/VehiculosScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
+import { RegistrarEvidenciaScreen } from '../screens/RegistrarEvidenciaScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ export const AppNavigator = ({ sesionActiva }: { sesionActiva: boolean }) => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Vehiculos" component={VehiculosScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="RegistrarEvidencia" component={RegistrarEvidenciaScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

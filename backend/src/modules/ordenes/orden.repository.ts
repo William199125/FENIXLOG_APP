@@ -23,12 +23,18 @@ export function crearOrden(data: {
   descripcion: string;
   vehiculoId?: number;
   detalles: { producto: string; cantidad: number }[];
+  fotoBase64?: string;
+  latitud?: number;
+  longitud?: number;
 }) {
   return prisma.orden.create({
     data: {
       descripcion: data.descripcion,
       vehiculoId: data.vehiculoId,
       detalles: { create: data.detalles },
+      fotoBase64: data.fotoBase64,
+      latitud: data.latitud,
+      longitud: data.longitud,
     },
     include: { vehiculo: true, detalles: true },
   });

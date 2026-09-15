@@ -16,7 +16,7 @@ function formatoAntiguedad(iso: string | null): string {
   return `Actualizado hace ${Math.round(minutos / 60)} h`;
 }
 
-export const VehiculosScreen = () => {
+export const VehiculosScreen = ({ navigation }: any) => {
   const [vehiculos, setVehiculos] = useState<Vehiculo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +62,10 @@ export const VehiculosScreen = () => {
           data={vehiculos}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
-            <VehiculoCard vehiculo={{ tipo: item.tipo, placa: item.placa, registro: item.registro, provincia: item.provincia, estado: item.estadoOperativo }} />
+            <VehiculoCard
+              vehiculo={{ tipo: item.tipo, placa: item.placa, registro: item.registro, provincia: item.provincia, estado: item.estadoOperativo }}
+              onPress={() => navigation.navigate('RegistrarEvidencia', { vehiculoId: item.id })}
+            />
           )}
           contentContainerStyle={{ paddingBottom: spacing.lg }}
         />

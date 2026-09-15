@@ -30,7 +30,9 @@ export async function obtenerFechaSincronizacion(): Promise<string | null> {
 
 // ---- Cola de operaciones pendientes ----
 
-export async function encolarOperacion(tipoOperacion: 'CREAR' | 'ACTUALIZAR', payload: object) {
+export type TipoOperacionCola = 'CREAR' | 'ACTUALIZAR' | 'CREAR_ORDEN';
+
+export async function encolarOperacion(tipoOperacion: TipoOperacionCola, payload: object) {
   const db = await getDb();
   const clienteId = Crypto.randomUUID();
   await db.runAsync(

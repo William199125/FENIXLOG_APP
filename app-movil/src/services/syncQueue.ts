@@ -35,6 +35,10 @@ export async function procesarCola() {
           } else {
             await api.put(`/vehiculos/${payload.id}`, payload);
           }
+        } else if (item.tipo_operacion === 'CREAR_ORDEN') {
+          // Registro de evidencia (foto + ubicación) de la Semana 14, protegido por el
+          // cliente_id único de la cola: si se reintenta, nunca duplica la orden.
+          await api.post('/ordenes', payload);
         }
         await eliminarDeCola(item.cliente_id);
         console.log(`[SYNC] Operación ${item.cliente_id} sincronizada correctamente.`);
@@ -42,7 +46,7 @@ export async function procesarCola() {
         const intentos = item.intentos + 1;
         if (intentos >= MAX_INTENTOS) {
           console.log(`[SYNC] Operación ${item.cliente_id} agotó sus ${MAX_INTENTOS} intentos.`);
-          await eliminarDeCola(item.cliente_id); // o marcarla como fallida permanente si prefieres conservarla
+          await eliminarDeCola(item.cliente_id);
         } else {
           const espera = BASE_ESPERA_MS * Math.pow(2, intentos - 1);
           const proximoIntento = new Date(Date.now() + espera).toISOString();
