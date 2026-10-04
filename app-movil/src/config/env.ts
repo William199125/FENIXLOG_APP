@@ -4,13 +4,10 @@ type Ambiente = "development" | "production";
 
 export const AMBIENTE: Ambiente = __DEV__ ? "development" : "production";
 
-// DECISIÓN DOCUMENTADA: este proyecto académico no cuenta con un servidor
-// desplegado con HTTPS. El build de producción se conecta mediante una IP
-// fija de Tailscale (red privada virtual cifrada punto a punto), que exige
-// que el equipo que aloja el backend esté encendido y conectado a Tailscale.
-// Esta es una limitación conocida, no apta para producción real, aceptada
-// para el alcance de este proyecto integrador.
-const URL_PRODUCCION = "http://100.118.112.37:4000";
+// DECISIÓN DOCUMENTADA ACTUALIZADA: Para la entrega final del proyecto 
+// integrador, el backend se ha desplegado exitosamente en Render con HTTPS 
+// y la base de datos en Neon (PostgreSQL). Ya no dependemos de Tailscale.
+const URL_PRODUCCION = "https://fenixlog-backend.onrender.com";
 
 const URLS_POR_AMBIENTE: Record<Ambiente, { emulador: string; fisico: string | undefined }> = {
   development: {
@@ -27,7 +24,9 @@ export const API_URL = Device.isDevice
   ? URLS_POR_AMBIENTE[AMBIENTE].fisico
   : URLS_POR_AMBIENTE[AMBIENTE].emulador;
 
+// TIMEOUTS ACTUALIZADOS: Aumentados a 60 segundos para compensar el "cold start"
+// (despertar) de la capa gratuita del servidor de Render.
 export const TIMEOUTS = {
-  lectura: 8000,
-  escritura: 12000,
+  lectura: 60000,
+  escritura: 60000,
 };
