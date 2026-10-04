@@ -1,14 +1,13 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { defineConfig, env } from "prisma/config";
 
-const dbUrl = new URL(process.env.DATABASE_URL as string);
-const adapter = new PrismaMariaDb({
-  host: dbUrl.hostname,
-  port: Number(dbUrl.port),
-  user: dbUrl.username,
-  password: dbUrl.password,
-  database: dbUrl.pathname.replace("/", ""),
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+    seed: "tsx prisma/seed.ts",
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
 });
-
-export const prisma = new PrismaClient({ adapter });

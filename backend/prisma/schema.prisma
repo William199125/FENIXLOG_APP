@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
 }
 
 model Usuario {
@@ -38,7 +38,7 @@ model Orden {
   vehiculoId  Int?
   vehiculo    Vehiculo?      @relation(fields: [vehiculoId], references: [id])
   detalles    DetalleOrden[]
-  fotoBase64  String?        @db.LongText
+  fotoBase64  String?
   latitud     Float?
   longitud    Float?
 }

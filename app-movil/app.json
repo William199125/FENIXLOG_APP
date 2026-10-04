@@ -24,10 +24,12 @@
     ],
     "android": {
       "package": "ec.mil.fenixlog",
+      "usesCleartextTraffic": true,
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION"
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "ios": {
@@ -36,6 +38,11 @@
       "infoPlist": {
         "NSCameraUsageDescription": "FENIX LOG necesita acceder a la cámara para registrar evidencia fotográfica del estado de los vehículos durante las órdenes de mantenimiento.",
         "NSLocationWhenInUseUsageDescription": "FENIX LOG registra la ubicación donde se levanta una orden de mantenimiento, para verificar la posición real del vehículo inspeccionado."
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d761714d-8713-4940-af46-b640c90dc1fe"
       }
     }
   }

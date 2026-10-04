@@ -1,26 +1,51 @@
 import * as repo from "./vehiculo.repository";
-import { getOrSetCache, invalidateCache } from "../../lib/cache";
+import { getOrSetCache, invalidateCacheByPrefix } from "../../lib/cache";
 
-const CACHE_KEY = "vehiculos:all";
+const CACHE_PREFIX = "vehiculos:";
 
-export async function obtenerVehiculos() {
-  // Cache-Aside: TTL 60s
-  return getOrSetCache(CACHE_KEY, 60, () => repo.listarVehiculos());
+interface OpcionesListado {
+  page?: number;
+  limit?: number;
+  estado?: string;
+  provincia?: string;
+}
+
+export async function obtenerVehiculos(opciones: OpcionesListado = {}) {
+  // La clave de caché incluye los parámetros: cada combinación de filtro/página
+  // se cachea por separado, evitando devolver datos de una consulta distinta.
+  const claveCache = `${CACHE_PREFIX}${JSON.stringify(opciones)}`;
+
+  return getOrSetCache(claveCache, 60, async () => {
+    const vehiculos = await repo.listarVehiculos(opciones);
+
+    if (opciones.page && opciones.limit) {
+      const total = await repo.contarVehiculos(opciones);
+      return {
+        data: vehiculos,
+        page: opciones.page,
+        limit: opciones.limit,
+        total,
+        totalPages: Math.ceil(total / opciones.limit),
+      };
+    }
+
+    return vehiculos; // comportamiento original: array simple, sin paginar
+  });
 }
 
 export async function crearVehiculo(data: any) {
   const vehiculo = await repo.crearVehiculo(data);
-  invalidateCache(CACHE_KEY); // invalidación al escribir
+  invalidateCacheByPrefix(CACHE_PREFIX);
   return vehiculo;
 }
 
 export async function actualizarVehiculo(id: number, data: any) {
   const vehiculo = await repo.actualizarVehiculo(id, data);
-  invalidateCache(CACHE_KEY);
+  invalidateCacheByPrefix(CACHE_PREFIX);
   return vehiculo;
 }
 
 export async function eliminarVehiculo(id: number) {
   await repo.eliminarVehiculo(id);
-  invalidateCache(CACHE_KEY);
+  invalidateCacheByPrefix(CACHE_PREFIX);
 }
