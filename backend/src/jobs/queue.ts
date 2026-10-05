@@ -26,7 +26,7 @@ async function processQueue() {
 }
 
 async function handleJob(job: Job) {
-  const { notificarNuevaOrden } = await import("./notificacion.worker");
+  const { notificarNuevaOrden } = await import("./notificacion.worker.js");
   if (job.type === "NOTIFICAR_NUEVA_ORDEN") {
     await notificarNuevaOrden(job.payload);
   }
